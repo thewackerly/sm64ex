@@ -39,10 +39,10 @@ TARGET_BITS ?= 0
 
 # Disable better camera by default
 BETTERCAMERA ?= 0
-# Disable no drawing distance by default
-NODRAWINGDISTANCE ?= 0
-# Disable texture fixes by default (helps with them purists)
-TEXTURE_FIX ?= 0
+# Enable no drawing distance by default
+NODRAWINGDISTANCE ?= 1
+# Enable texture fixes by default (fuck the purists)
+TEXTURE_FIX ?= 1
 # Enable extended options menu by default
 EXT_OPTIONS_MENU ?= 1
 # Disable text-based save-files by default
@@ -1025,7 +1025,7 @@ else
 endif
 
 $(APCPP_LIB): lib/APCpp/Archipelago.cpp lib/APCpp/Archipelago.h
-	cd lib/APCpp && mkdir -p build && cd build && CXX=$(CXX) cmake .. $(CMAKE_WIN_BUILD_FLAG) -DMBEDTLS_FATAL_WARNINGS=OFF -DCMAKE_C_FLAGS="-fzero-init-padding-bits=unions" && CXX=$(CXX) cmake --build .
+	cd lib/APCpp && mkdir -p build && cd build && CXX=$(CXX) cmake .. $(CMAKE_WIN_BUILD_FLAG) -DMBEDTLS_FATAL_WARNINGS=OFF && CXX=$(CXX) cmake --build .
 
 $(EXE): $(O_FILES) $(MIO0_FILES:.mio0=.o) $(SOUND_OBJ_FILES) $(ULTRA_O_FILES) $(GODDARD_O_FILES) $(if $(RPC_LIBS),$(BUILD_DIR)/$(RPC_LIBS),) $(APCPP_LIB)
 	$(LD) -static-libgcc -static-libstdc++ -L $(BUILD_DIR) -o $@ $(O_FILES) $(SOUND_OBJ_FILES) $(ULTRA_O_FILES) $(GODDARD_O_FILES) $(LDFLAGS) $(APCPP_LIB) -Wl,-rpath,. 
